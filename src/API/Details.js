@@ -162,3 +162,12 @@ export function GetChapterInfo(params) {
     params,
   });
 }
+
+// 获取指定用户的作品和插图
+export function GetIDTpWorks(params) {
+  return request({
+    url: "ComicA/works/works/GetIDTpWorks",
+    method: "GET",
+    params,
+  });
+}

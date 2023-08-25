@@ -47,6 +47,18 @@ const routes = [
         name: "/UserDetails",
         component: () => import("@/views/User/UserDetails"),
       },
+      // 用户关主人数页面
+      {
+        path: "/User/Concern",
+        name: "/Concern",
+        component: () => import("@/views/User/Concern"),
+      },
+      // 用户关注人的详细页面
+      {
+        path: "/User/ConcernMain",
+        name: "/Concern",
+        component: () => import("@/views/User/ConcernMain"),
+      },
       // 插图集合
       {
         path: "/Illustration",
@@ -83,6 +95,12 @@ const routes = [
     name: "WatchImg",
     component: () => import("@/views/WatchImg"),
   },
+    // 播放器
+    {
+      path: "/ChatRoom",
+      name: "ChatRoom",
+      component: () => import("@/views/User/ChatRoom"),
+    },
 ];
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题

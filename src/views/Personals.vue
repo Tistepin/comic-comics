@@ -64,11 +64,17 @@
           </div>
         </div>
         <div class="LoginSelect__TitleContent">
-          <div
-            class="LoginSelect__TitleContent_Title"
-          >
-          <router-link to="/User/UserDetails">个人信息</router-link>
-            
+          <div class="LoginSelect__TitleContent_Title">
+            <router-link to="/User/Concern">关注</router-link>
+          </div>
+          <div class="LoginSelect__TitleContent_More">
+            <div>更多</div>
+            <img src="../assets/image/more.png" class="rightImg" />
+          </div>
+        </div>
+        <div class="LoginSelect__TitleContent">
+          <div class="LoginSelect__TitleContent_Title">
+            <router-link to="/User/UserDetails">个人信息</router-link>
           </div>
           <div class="LoginSelect__TitleContent_More">
             <div>更多</div>
@@ -150,10 +156,9 @@ export default {
       UpdateUserPwd(this.updateUserPwd)
         .then((result) => {
           this.dialogVisible = false;
-        this.$message.success("修改成功");
+          this.$message.success("修改成功");
         })
-        .catch((err) => {
-        });
+        .catch((err) => {});
     },
     GoHistoryAndBookshelfView(a) {
       this.$router.push({

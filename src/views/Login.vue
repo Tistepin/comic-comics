@@ -49,6 +49,7 @@
 
 <script>
 import { Login } from "../API/login";
+
 export default {
   name: "Login",
   data() {
@@ -63,12 +64,11 @@ export default {
     LoginFun() {
       if (this.listQuery.username === "" || this.listQuery.password === "")
         return;
-      this.$store
-        .dispatch("userStore/Login", this.listQuery)
-        .then((res) => {
-          this.$router.push("/Home");
-        })
-        .catch((err) => {});
+      this.$store.dispatch("userStore/Login", this.listQuery).then((res) => {
+        this.LoginWebSocket();
+        this.$router.push("/Home");
+      });
+      // .catch((err) => {});
       // Login(this.listQuery).then((res) => {
       //   this.$store.dispatch("userStore/Login", {
       //     key: "token",
@@ -80,6 +80,23 @@ export default {
       // };
       //   this.$router.push("/Home");
       // });
+    },
+    // 登录聊天系统
+    LoginWebSocket() {
+      // 消息处理 读取
+      this.$webSocket.onmessage = function (evt) {
+        if (evt.data.indexOf("}") > -1) {
+          console.log("recv json <==" + evt.data);
+          this.msgItem.push(JSON.parse(evt.data));
+          console.log(this.msgItem);
+        } else {
+          console.log("recv<==" + evt.data);
+        }
+      }.bind(this);
+      //出错回调
+     this.$webSocket.onerror = function (evt) {
+        console.log(evt.data);
+      };
     },
   },
 };

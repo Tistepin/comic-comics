@@ -79,8 +79,6 @@ export default {
     this.Imggun();
   },
   mounted() {
-    // 页面加载完成
-
     setTimeout(() => {
       this.LookHistoryWorks();
     }, 500);
@@ -220,7 +218,6 @@ export default {
         }
       }
     },
-
     // 添加历史记录
     WatchHistory() {
       var WorksWatchHistoryTo = {
@@ -274,6 +271,11 @@ export default {
         }
       }
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    next(false);
+    this.WatchHistory();
+    next();
   },
 };
 </script>

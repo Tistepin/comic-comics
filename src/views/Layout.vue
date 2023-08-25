@@ -16,6 +16,7 @@ export default {
         { title: "排行榜", id: "/Ranking" },
         { title: "插图", id: "/Illustration" },
         { title: "书架", id: "/HistoryAndBookshelfView?key=Bookshelf" },
+        { title: "历史阅读", id: "/HistoryAndBookshelfView?key=History" },
         { title: "用户个人信息", id: "/User/UserDetails" },
       ],
       isHeaderActive: "/Home",
@@ -155,7 +156,7 @@ export default {
               :class="isHeaderActive == item.id ? 'active' : ''"
               v-for="(item, index) in headerArrText"
               :key="item.id"
-              v-show="index > 3 && index < 6"
+              v-show="index > 3 && index < 7"
               @click="checkNav(item.id)"
               >{{ item.title }}</span
             >
@@ -172,7 +173,7 @@ export default {
       <el-main class="main">
         <router-view />
       </el-main>
-      <el-footer>版权所有 ©2013-2023 滑稽网络科技有限公司鄂ICP备19019472号-4鄂公网安备42010402000357号`ws </el-footer>
+      <el-footer>版权所有 ©2013-2023 滑稽网络科技有限公司鄂ICP备19019472号-4鄂公网安备42010402000357号 </el-footer>
     </el-container>
   </div>
 </template>
@@ -400,5 +401,26 @@ body > .el-container {
   padding: 0.125rem 0;
   overflow: hidden;
   overflow-y: scroll;
+}
+</style>
+
+<style lang="scss" scoped>
+// PC端样式
+@media screen and (min-width: 768px) and (max-width: 1920px) {
+  .el-footer {
+    background-color: #b3c0d1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
+}
+// 移动端样式
+@media screen and (max-width: 768px) {
+  .el-footer {
+    background-color: #b3c0d1;
+    color: #333;
+    text-align: center;
+    line-height: 30px;
+  }
 }
 </style>

@@ -13,3 +13,12 @@ export function UpdateUser(data) {
     data,
   });
 }
+
+// 根据指定id获取user信息
+export function GetIdUserEntity(params) {
+  return request({
+    url: "ComicA/works/user/GetIdUserEntity",
+    method: "GET",
+    params
+  });
+}

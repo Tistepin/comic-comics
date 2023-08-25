@@ -328,6 +328,7 @@ export default {
     this.getAreaDownList();
     this.getCategoryDownList();
     this.getWorksList();
+
   },
   methods: {
     // 获取用户的上传的作品集
