@@ -88,19 +88,24 @@ const routes = [
     name: "Login",
     component: () => import("@/views/Login"),
   },
-
+  // 登录页面
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("@/views/register"),
+  },
   // 播放器
   {
     path: "/WatchImg",
     name: "WatchImg",
     component: () => import("@/views/WatchImg"),
   },
-    // 播放器
-    {
-      path: "/ChatRoom",
-      name: "ChatRoom",
-      component: () => import("@/views/User/ChatRoom"),
-    },
+  // 播放器
+  {
+    path: "/ChatRoom",
+    name: "ChatRoom",
+    component: () => import("@/views/User/ChatRoom"),
+  },
 ];
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题

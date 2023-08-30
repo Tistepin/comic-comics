@@ -14,6 +14,27 @@
         <div class="Details__Explain__Container__UserInfo">
           <div class="Details__Explain__Container__UserInfo__author">
             作者：<span>{{ WorksInfoData.worksCreator }}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp; 上传人：<span>{{
+              WorksInfoData.creatorName
+            }}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            <svg
+              t="1693297407448"
+              class="icon"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="8868"
+              width="20"
+              height="20"
+              @click="followFunc(WorksInfoData, CheckContact ? 2 : 1)"
+            >
+              <path
+                d="M332.329412 530.070588C266.070588 487.905882 223.905882 415.623529 223.905882 331.294118c0-132.517647 108.423529-240.941176 240.941177-240.941177s240.941176 108.423529 240.941176 240.941177-108.423529 240.941176-240.941176 240.941176c-198.776471 0-361.411765 162.635294-361.411765 361.411765 0 18.070588-12.047059 30.117647-30.117647 30.117647s-30.117647-12.047059-30.117647-30.117647c0-186.729412 120.470588-343.341176 289.129412-403.576471zM464.847059 512c102.4 0 180.705882-78.305882 180.705882-180.705882s-78.305882-180.705882-180.705882-180.705883-180.705882 78.305882-180.705883 180.705883 78.305882 180.705882 180.705883 180.705882z m373.458823 289.129412c36.141176-36.141176 36.141176-90.352941 0-126.494118-36.141176-36.141176-90.352941-36.141176-126.494117 0-12.047059 12.047059-30.117647 12.047059-42.164706 0-36.141176-36.141176-90.352941-36.141176-126.494118 0-36.141176 36.141176-36.141176 90.352941 0 126.494118l150.588235 150.588235 144.564706-150.588235z m42.164706-168.658824c60.235294 60.235294 60.235294 156.611765 0 210.82353l-168.658823 168.658823c-12.047059 12.047059-30.117647 12.047059-42.164706 0L500.988235 843.294118c-60.235294-60.235294-60.235294-156.611765 0-210.82353 54.211765-54.211765 132.517647-60.235294 192.752941-18.070588 54.211765-42.164706 138.541176-36.141176 186.729412 18.070588zM43.2 0"
+                :fill="CheckContact ? '#d81e06' : '#707070'"
+                p-id="8869"
+              ></path>
+            </svg>
           </div>
           <div class="Details__Explain__Container__UserInfo__author">
             题材：<span>{{ WorksInfoData.worksCategory }}</span>
@@ -107,7 +128,7 @@
         <el-col :span="16">
           <div
             class="Details__Chapter__StartRead-right"
-            @click="LookWorks(WorksWatchHistoryVo == null ? true : false)"
+            @click="LookWorks(WorksWatchHistoryVo.id == null ? true : false)"
           >
             <div>
               <svg
@@ -123,7 +144,11 @@
               </svg>
             </div>
             <span>{{
-              WorksWatchHistoryVo == null ? "立即观看" : '继续观看第'+WorksWatchHistoryVo.worksHistoryViewingChapter+'章'
+              WorksWatchHistoryVo.id == null
+                ? "立即观看"
+                : "继续观看第" +
+                  WorksWatchHistoryVo.worksHistoryViewingChapter +
+                  "章"
             }}</span>
           </div>
         </el-col>
@@ -141,7 +166,9 @@ import {
   Unsubscribe,
   GetRecordInfo,
 } from "../API/Details";
+import { GetCheckContact, AddFriend } from "../API/contact";
 import { Login } from "../API/login";
+import { GetUserInfo } from "../API/User";
 import { SaveWorksPopularity } from "../API/Popularity";
 export default {
   name: "Details",
@@ -157,6 +184,8 @@ export default {
       WorksWatchHistoryVo: {
         worksId: "",
       },
+      WorkUserInfo: {},
+      CheckContact: false, // 是否关注了
     };
   },
   created() {
@@ -174,6 +203,7 @@ export default {
     this.getRecordInfo(
       worksId ? worksId : sessionStorage.getItem("DetailsWorksId")
     );
+    this.GetCheckContact();
   },
   mounted() {},
   methods: {
@@ -316,6 +346,48 @@ export default {
           params: { pageCount: cartoonPages, WorksChapterId, WorksId, id },
         });
       }
+    },
+    // 获取作品上传人信息
+    GetIdUserEntity() {
+      // GetIdUserEntity
+    },
+    followFunc(targetId, CheckContact) {
+      let userId = 0;
+      GetUserInfo().then((result) => {
+        if (result.code == 20000) {
+          // console.log(result.data.data);
+          userId = result.data.data.id;
+
+          if (userId == 0) {
+            this.$message.error("关注失败请联系管理员");
+          }
+          let data = {
+            userId: userId,
+            targetId: targetId.creator,
+            OperationType: CheckContact,
+          };
+          AddFriend(data)
+            .then((result) => {
+              if (result.Code == 0) {
+                console.log(result);
+                this.$message.success(result.Msg);
+                this.$router.go(0);
+              }
+            })
+            .catch((err) => {});
+        }
+      });
+    },
+    GetCheckContact() {
+      GetCheckContact().then((result) => {
+        if (result.code == 20000) {
+          console.log();
+          this.CheckContact =
+            result.data.GetCheckContact == undefined
+              ? false
+              : result.data.GetCheckContact;
+        }
+      });
     },
   },
 };

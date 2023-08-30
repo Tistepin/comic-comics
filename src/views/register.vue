@@ -19,84 +19,74 @@
     <div class="screen__content">
       <!-- 标题 -->
       <div class="title">
-        <span>登录</span>
+        <span>注册</span>
       </div>
-      <form class="login" @submit="() => false">
-        <div class="login_field">
+      <form class="register" @submit="() => false">
+        <div class="register_field">
           <input
             type="text"
-            class="login_input"
+            class="register_input"
             required="required"
-            v-model="listQuery.username"
+            v-model="listQuery.phone"
           />
-          <span>账户</span>
+          <span>手机号</span>
         </div>
-        <div class="login_field">
+        <div class="register_field">
           <input
             type="password"
-            class="login_input"
+            class="register_input"
             required="required"
             v-model="listQuery.password"
           />
           <span class="button_text">密码</span>
         </div>
-        <button class="button login_submit" @click="LoginFun">登录</button>
-        <a href="#">去注册</a>
+        <div class="register_field">
+          <input
+            type="password"
+            class="register_input"
+            required="required"
+            v-model="listQuery.password2"
+          />
+          <span class="button_text">确认密码</span>
+        </div>
+        <button class="button register_submit" @click="registerFun">
+          注册
+        </button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { Login } from "../API/login";
-
+import { SaveUserInfo } from "../API/User";
 export default {
-  name: "Login",
+  name: "register",
   data() {
     return {
       listQuery: {
-        username: "18574933063", //18574933063
-        password: "",
+        password: "", // 密码
+        password2: "", // 确认密码
+        nickname: "", //  昵称
+        phone: "", // 手机号
       },
     };
   },
   methods: {
-    LoginFun() {
-      if (this.listQuery.username === "" || this.listQuery.password === "")
-        return;
-      this.$store.dispatch("userStore/Login", this.listQuery).then((res) => {
-        this.LoginWebSocket();
-        this.$router.push("/Home");
-      });
-      // .catch((err) => {});
-      // Login(this.listQuery).then((res) => {
-      //   this.$store.dispatch("userStore/Login", {
-      //     key: "token",
-      //     value: res.data.FantasyTimetoken,
-      //   });
-      // this.listQuery = {
-      //   username: "",
-      //   password: "",
-      // };
-      //   this.$router.push("/Home");
-      // });
-    },
-    // 登录聊天系统
-    LoginWebSocket() {
-      // 消息处理 读取
-    //   this.$webSocket.webSocket.onmessage = function (evt) {
-    //     if (evt.data.indexOf("}") > -1) {
-    //       console.log("recv json <==" + evt.data);
-    //       this.msgItem.push(JSON.parse(evt.data));
-    //       console.log(this.msgItem);
-    //     } else {
-    //       console.log("recv<==" + evt.data);
-    //     }
-    //   }.bind(this);
-    //   //出错回调
-    //  this.$webSocket.webSocket.onerror = function (evt) {
-    //     console.log(evt.data);
-    //   };
+    registerFun() {
+      let registerDTO = this.listQuery;
+      console.log(registerDTO);
+      if (registerDTO.password == registerDTO.password2) {
+        SaveUserInfo(registerDTO)
+          .then((result) => {
+            if (result.code == 20000) {
+              this.$router.push("/Login");
+            }
+          })
+          .catch((err) => {
+            this.$message.error();
+            ("注册失败");
+          });
+      }
     },
   },
 };
@@ -170,20 +160,20 @@ img {
   height: calc(100% - 60px);
 }
 
-.login {
+.register {
   width: 100%;
   padding: 30px;
   //   padding-top: 40%;
 }
-.login a {
+.register a {
   display: none;
 }
-.login_field {
+.register_field {
   padding: 20px 0px;
   position: relative;
 }
 
-.login_input {
+.register_input {
   border: none;
   border-bottom: 2px solid #d1d1d4;
   background: none;
@@ -194,7 +184,7 @@ img {
   outline: none;
 }
 
-.login_field span {
+.register_field span {
   color: rgb(159, 159, 159);
   position: absolute;
   left: 0;
@@ -207,20 +197,20 @@ img {
   font-size: 1em;
 }
 
-.login_input:valid ~ span,
-.login_input:focus ~ span {
+.register_input:valid ~ span,
+.register_input:focus ~ span {
   color: #f57c7c;
   transform: translateY(-25px);
   font-size: 1.08em;
   font-weight: bold;
 }
 
-.login_input:valid,
-.login_input:focus {
+.register_input:valid,
+.register_input:focus {
   border-bottom: 2px solid #f57c7c;
 }
 
-.login_submit {
+.register_submit {
   background: #e95858;
   font-size: 18px;
   margin-top: 30px;
@@ -242,7 +232,7 @@ img {
   -webkit-user-select: none;
 }
 
-.social-login {
+.social-register {
   position: absolute;
   height: 140px;
   width: 160px;
@@ -256,7 +246,7 @@ img {
 <style lang="scss" scoped>
 // PC端樣式
 @media screen and (min-width: 768px) and (max-width: 1920px) {
-  .login_register {
+  .register_register {
     background: transparent;
 
     &:hover {
@@ -276,7 +266,7 @@ img {
     // height: 600px;
     margin-top: 100px;
   }
-  .login {
+  .register {
     a {
       display: inline;
       font-size: 14px;
@@ -288,11 +278,11 @@ img {
       }
     }
   }
-  .login_field span {
+  .register_field span {
     font-size: 16px;
   }
-  .login_input:valid ~ span,
-  .login_input:focus ~ span {
+  .register_input:valid ~ span,
+  .register_input:focus ~ span {
     font-size: 18px;
   }
 }

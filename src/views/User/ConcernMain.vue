@@ -30,7 +30,7 @@
           <el-col :span="8">
             <div class="fans">
               <span
-                ><b>21万</b><br />
+                ><b>{{UserInfo.fans>9999?UserInfo.fans+"万":UserInfo.fans}}</b><br />
                 <span style="font-size: 12px">粉丝</span></span
               >
             </div></el-col
@@ -38,7 +38,7 @@
           <el-col :span="8"
             ><div class="Concern">
               <span
-                ><b>588</b><br />
+                ><b>{{UserInfo.care}}</b><br />
                 <span style="font-size: 12px">关注</span></span
               >
             </div></el-col
@@ -46,7 +46,7 @@
           <el-col :span="8"
             ><div class="GetLike">
               <span
-                ><b>588</b><br />
+                ><b>{{UserInfo.likes}}</b><br />
                 <span style="font-size: 12px">获赞</span></span
               >
             </div></el-col
