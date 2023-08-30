@@ -22,3 +22,12 @@ export function GetIdUserEntity(params) {
     params
   });
 }
+
+// 根据指定id获取user信息
+export function SaveUserInfo(data) {
+  return request({
+    url: "ComicA/works/user/regist",
+    method: "put",
+    data
+  });
+}

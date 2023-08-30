@@ -28,13 +28,26 @@
     </div>
 
     <div class="ChatRoom-main">
-      <div>
+      <div class="msg-main">
+        <!--  -->
         <ul>
-          <li class="chat">
-            <div class="right">
+          <li
+            class="chat"
+            :class="item.ismine ? 'mine' : 'outh'"
+            v-for="(item, index) in msgItem"
+            :key="index"
+          >
+            <div :class="item.ismine ? 'right' : 'left'">
               <el-avatar size="large" :src="circleUrl"></el-avatar>
             </div>
-            <div>消息</div>
+            <div
+              :class="item.ismine ? 'rightCtent' : 'leftCtent'"
+              style="padding: 16px 16px 16px 10px; margin: 0 0 10px 0"
+            >
+              <div>
+                {{ item.msgTxt }}
+              </div>
+            </div>
           </li>
         </ul>
       </div>
@@ -42,7 +55,7 @@
     <footer class="footer">
       <div class="ChatRoom-wei">
         <div class="msg">
-          <el-input v-model="msgcontext.msgTxt"></el-input>
+          <el-input v-model="txtmsg"></el-input>
         </div>
         <div class="send" @click="sendmsg">
           <svg
@@ -55,6 +68,7 @@
             width="30"
             height="30"
             fill="#11b1f0"
+            style="margin-right: 15px"
           >
             <path
               d="M502.238 1024l142.189-194.32-142.19-40.964V1024zM0 566.714l403.968 122.374L901.485 266.66 515.916 721.68l431.91 133.42L1170.285 0 0 566.714z"
@@ -74,6 +88,7 @@ export default {
   name: "ChatRoom",
   data() {
     return {
+      txtmsg: "",
       UserInfo: {},
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -81,23 +96,29 @@ export default {
       msgcontext: {
         TargetId: -1,
         Type: -1,
-        CreateTime: new Date().getTime(),
+        CreateTime: this.formatDate(new Date().getTime()),
         userId: -1,
         msgTxt: "",
+        ismine: null,
       },
+      webc: {},
     };
   },
   created() {
     this.msgcontext.TargetId =
       this.$route.query.targetId == undefined
-        ? sessionStorage.getItem("Concern.targetId")
-        : this.$route.query.targetId;
+        ? parseInt(sessionStorage.getItem("Concern.targetId"))
+        : parseInt(this.$route.query.targetId);
     this.msgcontext.userId =
       this.$route.query.UserId == undefined
-        ? sessionStorage.getItem("Concern.UserId")
-        : this.$route.query.UserId;
-    console.log(this.msgcontext);
+        ? parseInt(sessionStorage.getItem("Concern.UserId"))
+        : parseInt(this.$route.query.UserId);
+    // console.log(this.msgcontext);
     this.GetUserInfo();
+    this.initWebsocket();
+  },
+  mounted() {
+    this.initmsgItem();
   },
   methods: {
     back() {
@@ -111,35 +132,98 @@ export default {
         })
         .catch((err) => {});
     },
-    WebSocketOperate() {
-      //消息处理 读取
-      this.$webSocket.onmessage = function (evt) {
-        console.log("onmessage", evt.data);
-        if (evt.data.indexOf("}") > -1) {
-          console.log("recv json <==" + evt.data);
-          // this.onmessage(JSON.parse(evt.data));
-        } else {
-          console.log("recv<==" + evt.data);
-        }
-      }.bind(this);
-      //关闭回调
-      this.$webSocket.onclose = function (evt) {
-        console.log("您已自动下线"); //code 1006
-      };
-      //出错回调
-      this.$webSocket.onerror = function (evt) {
-        console.log(evt.data);
-      };
-    },
     sendmsg() {
-      // console.log(1);
       this.msgcontext.Type = 1;
+      this.msgcontext.ismine = true;
+      let msg = JSON.parse(JSON.stringify(this.msgcontext));
+      msg.msgTxt = this.txtmsg;
+      this.txtmsg = "";
+      console.log(this.webc);
+      this.msgItem.push(msg);
+      this.initmsgItem();
       console.log(this.$webSocket);
-      this.$webSocket.send(JSON.stringify(this.msgcontext));
+      console.log(this.$webSocket.webSocket);
+      this.$webSocket.webSocket.send(JSON.stringify(msg));
+      // console.log(this.msgItem);
+
+      // window.scrollTo(0, 9999);
+      // window.scrollTo(0, document.querySelector(".ChatRoom-main").offsetHeight);
     },
     // createmsgcontext: function () {
     //   return JSON.parse(JSON.stringify(this.msgcontext));
     // },
+    initWebsocket() {
+      // var url = "ws://localhost:8883/LoginWebSocket?FantasyTimetoken=";
+      // var token = sessionStorage.getItem("FantasyTimetoken");
+      // let webc = new WebSocket(url + token);
+      // console.log(webc);
+      // 消息处理 读取
+      this.$webSocket.webSocket.onmessage = function (evt) {
+        if (evt.data.indexOf("}") > -1) {
+          console.log("recv json <==" + evt.data);
+          let msg = JSON.parse(evt.data);
+          msg.ismine = false;
+          this.msgItem.push(msg);
+          this.initmsgItem();
+          // console.log(this.msgItem);
+        } else {
+          console.log("recv<==" + evt.data);
+        }
+      }.bind(this);
+      //出错回调
+      this.$webSocket.webSocket.onerror = function (evt) {
+        console.log(evt.data);
+      };
+      //关闭回调
+      this.$webSocket.webSocket.onclose = function (evt) {
+        setTimeout(function () {
+          this.initWebsocket(); // 重新调用连接webSocket事件
+        }, 10000);
+      };
+    },
+    initmsgItem() {
+      var that = this;
+      that.timer = setTimeout(function () {
+        // window.scrollTo(0, 9999);
+        window.scrollTo(
+          0,
+          document.querySelector(".ChatRoom-main").offsetHeight
+        );
+        if (!false) {
+          let scroll = document.querySelector(".ChatRoom-main").offsetHeight;
+          // console.log(scroll);
+          let inner = document.querySelector(".msg-main").offsetHeight;
+          // console.log(inner);
+          let y = scroll - inner - 30;
+          // let transform = document.querySelector("..msg-main").style.transform;
+          document.querySelector(".msg-main").style.transform =
+            "translateY(" + y + "px)";
+        } else {
+          document.querySelector("..msg-main").style.transform =
+            "translateY(" + 0 + "px)";
+        }
+
+        clearTimeout(that.timer);
+      }, 100);
+      console.log(this.msgItem);
+    },
+    formatDate(date) {
+      var date = new Date(date);
+      var YY = date.getFullYear() + "-";
+      var MM =
+        (date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) + "-";
+      var DD = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      var hh =
+        (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
+      var mm =
+        (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+        ":";
+      var ss =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      return YY + MM + DD + " " + hh + mm + ss;
+    },
   },
 };
 </script>
@@ -191,6 +275,18 @@ export default {
       }
       .left {
         margin-right: 15px;
+      }
+      .rightCtent {
+        margin-left: 15px;
+        background-color: #e3eafa;
+        border-radius: 10px;
+      }
+      .leftCtent {
+        margin-right: 15px;
+        border-radius: 10px;
+      }
+      .msg-main {
+        transform: translateY(635px);
       }
     }
     .ChatRoom-wei {

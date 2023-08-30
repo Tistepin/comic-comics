@@ -37,11 +37,26 @@ export default {
       SearchInput_PC: "", //PC搜索輸入
       SearchInput_Move: "", //移动搜索輸入
       IsShowMoverInput: false, //显示移动端输入框
+      msgItems: {
+        count: 0,
+        msgItem: [],
+      },
     };
   },
   created() {
     this.isHeaderActive = this.$route.path;
     this.initData();
+    this.$webSocket.webSocket.onmessage = function (evt) {
+      if (evt.data.indexOf("}") > -1) {
+        console.log("recv json <==" + evt.data);
+        let msg = JSON.parse(evt.data);
+        msg.ismine = false;
+        this.msgItems.count += 1;
+        console.log(this.msgItems);
+      } else {
+        console.log("recv<==" + evt.data);
+      }
+    }.bind(this);
   },
   methods: {
     // 初始化函数
@@ -108,7 +123,10 @@ export default {
             :src="touxiangURL"
             :fit="'fill'"
           ></el-image> -->
-          <img src="../assets/image/FantasyTime(已去底).jpg"  style="width: 100%; height: 100%"/>
+          <img
+            src="../assets/image/FantasyTime(已去底).jpg"
+            style="width: 100%; height: 100%"
+          />
         </div>
         <div class="header__headContainer">
           <nav class="header__headContainer_Nav">
@@ -146,9 +164,9 @@ export default {
           </div>
         </div>
         <div class="header__User">
-          <div class="header__User__Message2" v-if="(UserName = '')">
+          <div class="header__User__Message2" v-if="(UserName == '')">
             <span @click="$router.push('/Login')">登录</span><span>|</span
-            ><span>注册</span>
+            ><span @click="$router.push('/register')">注册</span>
           </div>
           <div v-else class="header__User__Message2-2">
             <img src="../assets/image/person-grey.png" />
@@ -162,6 +180,18 @@ export default {
             >
           </div>
           <div
+            style="
+              z-index: 1;
+              color: red;
+              left: 7px;
+              position: absolute;
+              top: 28px;
+            "
+            v-if="(UserName != '')"
+          >
+            {{ msgItems.count }}
+          </div>
+          <div
             class="header__User__Message"
             @click="$router.push('/Personals')"
           >
@@ -173,7 +203,10 @@ export default {
       <el-main class="main">
         <router-view />
       </el-main>
-      <el-footer>版权所有 ©2013-2023 滑稽网络科技有限公司鄂ICP备19019472号-4鄂公网安备42010402000357号 </el-footer>
+      <el-footer
+        >版权所有 ©2013-2023
+        滑稽网络科技有限公司鄂ICP备19019472号-4鄂公网安备42010402000357号
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -226,7 +259,7 @@ body > .el-container {
   padding: 0 10px !important;
   &__headPortrait {
     height: 100%;
-    width: 100px; 
+    width: 100px;
     margin-right: 10px;
     ::v-deep .el-image {
       display: block !important;
