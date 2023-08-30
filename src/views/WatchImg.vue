@@ -120,7 +120,7 @@ export default {
     setUrls() {
       for (let index = 1; index <= this.pageCount; index++) {
         var url = `
-        http://10.161.139.216/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${index}&WorksChapterId=${this.id}&WorksId=${this.WorksId}
+        http://47.115.224.241/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${index}&WorksChapterId=${this.id}&WorksId=${this.WorksId}
         `;
         var ImageId = index;
         this.urls.push({ url, ImageId });

@@ -341,7 +341,7 @@ export default {
       right: 0;
       bottom: 0;
       z-index: -5;
-      background-image: url("http://10.161.139.216/api/oss/getWorkContent?ImageDefaultStatus=1&WorksId=1");
+      background-image: url("http://47.115.224.241/api/oss/getWorkContent?ImageDefaultStatus=1&WorksId=1");
       background-repeat: no-repeat;
       background-size: cover;
       filter: blur(8px); // 虚化的程度

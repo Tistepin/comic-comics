@@ -177,7 +177,7 @@ export default {
       });
     },
     handleUploadSuccess(res, file) {
-      this.CartoonWorksDetailsEntityTo.worksChapterLocations.push(res.data.url);
+      this.CartoonWorksDetailsEntityTo.worksChapterLocations=(res.data.url);
       this.$message.success("上传" + res.message);
     },
     cartoonChapterIdBlur() {
