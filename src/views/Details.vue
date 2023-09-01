@@ -1,7 +1,10 @@
 <template>
   <div class="Details">
     <div class="Details__Explain">
-      <div class="Details__Explain__filter"></div>
+      <div
+        class="Details__Explain__filter"
+        :style="{ '--DefaultImageUrl': DefaultImageUrl }"
+      ></div>
       <div class="Details__Explain__Topbgc">
         <div class="Details__Explain__Topbgc__Img">
           <img :src="WorksInfoData.defaultImage" alt="" />
@@ -186,6 +189,7 @@ export default {
       },
       WorkUserInfo: {},
       CheckContact: false, // 是否关注了
+      DefaultImageUrl: "", // 图片背景
     };
   },
   created() {
@@ -204,6 +208,12 @@ export default {
       worksId ? worksId : sessionStorage.getItem("DetailsWorksId")
     );
     this.GetCheckContact();
+
+    this.DefaultImageUrl =
+      'url("http://' +
+      process.env.VUE_APP_API_URL +
+      '/api/oss/getWorkContent?ImageDefaultStatus=1&WorksId='+sessionStorage.getItem("DetailsWorksId")+'")';
+      console.log(this.DefaultImageUrl);
   },
   mounted() {},
   methods: {
@@ -413,7 +423,7 @@ export default {
       right: 0;
       bottom: 0;
       z-index: -5;
-      background-image: url("http://47.115.224.241/api/oss/getWorkContent?ImageDefaultStatus=1&WorksId=1");
+      background-image: var(--DefaultImageUrl);
       background-repeat: no-repeat;
       background-size: cover;
       filter: blur(8px); // 虚化的程度

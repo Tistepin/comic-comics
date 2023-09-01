@@ -2,27 +2,7 @@
   <div class="WatchImg">
     <!-- <div class="WatchImg__Title">阿斯達薩達撒大·</div> -->
     <div class="WatchImg__Container" style="overflow: auto">
-      <!-- <div
-        class="WatchImg__Container__Img"
-        v-for="item in pageCount2"
-        :key="item"
-      >
-        cccc{{ item }}
-        <img
-          :src="`http://10.161.139.216/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${item}&WorksChapterId=${WorksChapterId}&WorksId=${WorksId}`"
-          alt=""
-        />
-      </div> -->
-      <!-- <div
-        class="WatchImg__Container__Img"
-        v-for="item in pageCount"
-        :key="item"
-      >
-        <img
-          src="../assets/image/lazyImg.png"
-          :data-url="`http://10.161.139.216/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${item}&WorksChapterId=${id}&WorksId=${WorksId}`"
-        />
-      </div> -->
+
       <el-image
         v-for="data in urls"
         :key="data.url"
@@ -120,7 +100,7 @@ export default {
     setUrls() {
       for (let index = 1; index <= this.pageCount; index++) {
         var url = `
-        http://47.115.224.241/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${index}&WorksChapterId=${this.id}&WorksId=${this.WorksId}
+        http://`+process.env.VUE_APP_API_URL+`/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${index}&WorksChapterId=${this.id}&WorksId=${this.WorksId}
         `;
         var ImageId = index;
         this.urls.push({ url, ImageId });

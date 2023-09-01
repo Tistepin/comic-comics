@@ -114,7 +114,7 @@ export default {
       actionUrl: "ComicA/oss/policy4",
       uploadpolicy2: "ComicA/oss/policy2",
       headers: {
-        jwt: this.$cookie.get("FantasyTimetoken"),
+        jwt: sessionStorage.getItem("FantasyTimetoken"),
       },
       CartoonWorksDetailsEntityTo: {
         worksId: null,

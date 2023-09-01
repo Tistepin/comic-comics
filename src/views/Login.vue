@@ -40,7 +40,7 @@
           />
           <span class="button_text">密码</span>
         </div>
-        <button class="button login_submit" @click="LoginFun">登录</button>
+        <button class="button login_submit" @click.prevent="LoginFun">登录</button>
         <a href="#">去注册</a>
       </form>
     </div>

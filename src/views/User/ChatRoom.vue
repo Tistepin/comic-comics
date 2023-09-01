@@ -125,12 +125,12 @@ export default {
       this.$router.go(-1);
     },
     GetUserInfo() {
-      GetIdUserEntity({ UserId: this.msgcontext.userId })
-        .then((result) => {
-          this.UserInfo = result.data.data;
-          console.log(this.UserInfo);
-        })
-        .catch((err) => {});
+      // GetIdUserEntity({ UserId: this.msgcontext.userId })
+      //   .then((result) => {
+      //     this.UserInfo = result.data.data;
+      //     console.log(this.UserInfo);
+      //   })
+      //   .catch((err) => {});
     },
     sendmsg() {
       this.msgcontext.Type = 1;
@@ -153,10 +153,6 @@ export default {
     //   return JSON.parse(JSON.stringify(this.msgcontext));
     // },
     initWebsocket() {
-      // var url = "ws://localhost:8883/LoginWebSocket?FantasyTimetoken=";
-      // var token = sessionStorage.getItem("FantasyTimetoken");
-      // let webc = new WebSocket(url + token);
-      // console.log(webc);
       // 消息处理 读取
       this.$webSocket.webSocket.onmessage = function (evt) {
         if (evt.data.indexOf("}") > -1) {

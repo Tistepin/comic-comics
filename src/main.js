@@ -15,17 +15,11 @@ import webSocket from "./utils/global";
 Vue.prototype.$webSocket = webSocket;
 
 Vue.use(ElementUI);
-
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
 router.beforeEach((to, from, next) => {
   //需要权限
   if (to.meta.requireAuth) {
     //判断当前是否拥有权限
-    var token = Cookies.get("FantasyTimetoken");
+    var token = sessionStorage.getItem("FantasyTimetoken");
     if (token) {
       next();
     } else {
@@ -40,3 +34,9 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+new Vue({
+  router,
+  store,
+  render: (h) => h(App),
+}).$mount("#app");

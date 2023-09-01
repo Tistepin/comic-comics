@@ -22,7 +22,7 @@ module.exports = {
     },
     proxy: {
       "/ComicA": {
-        target: 'http://47.115.224.241:80', // 这个链接是要代理到的地址
+        target: 'http://'+process.env.VUE_APP_API_URL+':8084', // 这个链接是要代理到的地址
         changeOrigin: true,
         secure: false,
         pathRewrite: {
@@ -30,7 +30,7 @@ module.exports = {
         },
       },
       "/Comic": {
-        target: 'http://47.115.224.241:8081', // 这个链接是要代理到的地址
+        target: 'http://'+process.env.VUE_APP_API_URL+':8081', // 这个链接是要代理到的地址
         changeOrigin: true,
         secure: false,
         pathRewrite: {
@@ -38,7 +38,7 @@ module.exports = {
         },
       },
       "/ComicSeach": {
-        target: 'http://47.115.224.241:8083', // 这个链接是要代理到的地址
+        target: 'http://'+process.env.VUE_APP_API_URL+':8083', // 这个链接是要代理到的地址
         changeOrigin: true,
         secure: false,
         pathRewrite: {
@@ -46,7 +46,7 @@ module.exports = {
         },
       },
       "/ComicImage": {
-        target: 'http://47.115.224.241:9100', // 这个链接是要代理到的地址
+        target: 'http://'+process.env.VUE_APP_API_URL+':9100', // 这个链接是要代理到的地址
         changeOrigin: true,
         secure: false,
         pathRewrite: {

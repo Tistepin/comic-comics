@@ -61,7 +61,7 @@ export default {
   methods: {
     // 初始化函数
     initData() {
-      var FantasyTimetoken = this.$cookie.get("FantasyTimetoken");
+      var FantasyTimetoken = sessionStorage.getItem("FantasyTimetoken");
       if (FantasyTimetoken) {
         this.UserName = sessionStorage.getItem("UserName");
       }

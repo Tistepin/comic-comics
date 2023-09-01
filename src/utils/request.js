@@ -16,8 +16,7 @@ service.interceptors.request.use(
   (config) => {
     // debugger
     // do something before request is sent
-
-    var token = Cookies.get("FantasyTimetoken");
+    var token = sessionStorage.getItem("FantasyTimetoken");
     if (token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
@@ -25,10 +24,15 @@ service.interceptors.request.use(
       config.headers["FantasyTimetoken"] = token; //getToken();
       config.headers["Content-Type"] = "application/json";
       // //"Content-Type" = "application/json"
+    }else{
+      
+      // config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+      // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }
     return config;
   },
   (error) => {
+    console.log(1);
     // do something with request error
     //console.log('request.js service.interceptors.request.use :' + error) // for debug
     return Promise.reject(error);

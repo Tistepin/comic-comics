@@ -6,7 +6,6 @@ import {
   GetClassicEnd,
   GetWorkContent,
 } from "../API/index.js";
-import { Login } from '../API/login.js';
 
 export default {
   name: "Home",

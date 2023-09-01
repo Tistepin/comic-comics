@@ -138,7 +138,7 @@ export default {
   methods: {
     // 初始化函数
     initData() {
-      var FantasyTimetoken = this.$cookie.get("FantasyTimetoken");
+      var FantasyTimetoken = sessionStorage.getItem("FantasyTimetoken");
       if (FantasyTimetoken) {
         this.UserName = sessionStorage.getItem("UserName");
       }
@@ -146,8 +146,8 @@ export default {
     // 退出登录
     loginOut() {
       LoginOut().then((res) => {
-        this.$cookie.remove("FantasyTimetoken");
         sessionStorage.removeItem("UserName");
+        sessionStorage.removeItem("FantasyTimetoken");
         this.$router.push("/Home");
       });
     },

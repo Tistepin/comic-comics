@@ -5,6 +5,12 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test": "vue-cli-service serve --mode test",
+    "gs": "vue-cli-service serve --mode gs",
+    "prod": "vue-cli-service serve --mode prod",
+    "build:test": "vue-cli-service build --mode test",
+    "build:beta": "vue-cli-service build --mode beta",
+    "build:prod": "vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

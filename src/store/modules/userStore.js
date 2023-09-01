@@ -23,9 +23,7 @@ const actions = {
               response.data.FantasyTimetoken
             );
             sessionStorage.setItem("UserName", response.data.UserName);
-            Cookies.set("FantasyTimetoken", response.data.FantasyTimetoken, { expires: 1 });
             commit("SET_TOKEN", result);
-            console.log(response.data);
             resolve();
           } else {
             Message({
@@ -37,6 +35,7 @@ const actions = {
           }
         })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
