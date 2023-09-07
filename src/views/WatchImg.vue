@@ -100,7 +100,7 @@ export default {
     setUrls() {
       for (let index = 1; index <= this.pageCount; index++) {
         var url = `
-        http://`+process.env.VUE_APP_API_URL+`/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${index}&WorksChapterId=${this.id}&WorksId=${this.WorksId}
+        http://`+process.env.VUE_APP_API_URL+`:8084/api/oss/getWorkContent?ImageDefaultStatus=0&ImageId=${index}&WorksChapterId=${this.id}&WorksId=${this.WorksId}
         `;
         var ImageId = index;
         this.urls.push({ url, ImageId });
@@ -253,6 +253,7 @@ export default {
     },
   },
   beforeRouteLeave(to, from, next) {
+    sessionStorage.removeItem("worksHistoryViewingChapterImage")
     next(false);
     this.WatchHistory();
     next();

@@ -53,6 +53,14 @@ module.exports = {
           "^/ComicImage": "", // 重写路径
         },
       },
+      "/ComiGo": {
+        target: 'http://'+process.env.VUE_APP_API_URL+':8883', // 这个链接是要代理到的地址
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: {
+          "^/ComiGo": "", // 重写路径
+        },
+      },
     },
   },
   // chainWebpack: (config) => {

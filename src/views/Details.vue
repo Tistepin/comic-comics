@@ -212,7 +212,7 @@ export default {
     this.DefaultImageUrl =
       'url("http://' +
       process.env.VUE_APP_API_URL +
-      '/api/oss/getWorkContent?ImageDefaultStatus=1&WorksId='+sessionStorage.getItem("DetailsWorksId")+'")';
+      ':8084/api/oss/getWorkContent?ImageDefaultStatus=1&WorksId='+sessionStorage.getItem("DetailsWorksId")+'")';
       console.log(this.DefaultImageUrl);
   },
   mounted() {},
@@ -315,6 +315,7 @@ export default {
       });
     },
     LookWorks(bool) {
+      console.log(this.WorksWatchHistoryVo);
       if (this.WorksChapterData.length <= 0) {
         this.$message.error("没有章节");
       }

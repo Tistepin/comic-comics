@@ -1,5 +1,6 @@
 <script>
 import { GetCategory, GetArea, GetWorks } from "../API/index";
+import { getWorks } from "../API/contact";
 export default {
   name: "Cartoon",
   components: {},
@@ -62,12 +63,18 @@ export default {
     },
     // 获取条件选择后的数据
     getWorks() {
-      GetWorks(this.HandleQuery).then((res) => {
-        if (res.code == 20000) {
-          this.getWordsData = res.data.data.works;
-          this.PageTotal = res.data.data.total;
+      getWorks(this.HandleQuery).then((res) => {
+        if (res.Code == 20000) {
+          this.getWordsData = res.Rows;
+          this.PageTotal = res.Total;
         }
       });
+      // GetWorks(this.HandleQuery).then((res) => {
+      // if (res.code == 20000) {
+      //   this.getWordsData = res.data.data.works;
+      //   this.PageTotal = res.data.data.total;
+      // }
+      // });
     },
 
     // 地区
@@ -141,7 +148,7 @@ export default {
       deep: true, //深度监听设置为 true
       immediate: true,
       handler: function (newVal, oldVal) {
-        this.getWordsData=newVal
+        this.getWordsData = newVal;
       },
     },
   },

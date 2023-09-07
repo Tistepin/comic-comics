@@ -60,9 +60,9 @@
               :multiple="false"
               :headers="headers"
               :limit="1"
-              :on-success="handleUploadSuccess"
+              :on-success="handleUploadSuccessZip"
               :on-preview="handlePreview"
-              :on-remove="handleRemove"
+              :on-remove="handleRemoveList"
             >
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">
@@ -156,7 +156,8 @@ export default {
       this.uploadpolicy2 += "?WorksName=" + resultArr.label;
       this.ynused = 1;
     },
-    handleUploadSuccess(res, file) {
+    handleUploadSuccessZip(res, file) {
+      this.CartoonWorksDetailsEntityTo.worksChapterLocations=[]
       this.CartoonWorksDetailsEntityTo.worksChapterLocations = res.data.url;
       this.$message.success("上传" + res.message);
     },
@@ -164,23 +165,33 @@ export default {
     handlePreview(file) {
       this.$message.success("压缩文件无法预览！");
     },
-    handleRemove(file, fileList) {
-      this.$message.success("移除" + file.response.message);
+    handleRemoveList(file, fileList) {
+      let a = { urls: file.response.data.url };
+      Remove(a).then((result) => {
+        this.$message.success("移除成功");
+      });
     },
     handleChange(file, fileList) {
       this.fileList = fileList.slice();
       // this.CartoonWorksDetailsEntityTo.worksChapterLocations.push()
     },
     handleRemove({ response }) {
-      Remove({ url: response.data.url }).then((result) => {
+      let urls = [];
+      urls.push(response.data.url);
+      let a = { urls: urls };
+      Remove(a).then((result) => {
         this.$message.success("移除成功");
       });
     },
     handleUploadSuccess(res, file) {
-      this.CartoonWorksDetailsEntityTo.worksChapterLocations=(res.data.url);
+      this.CartoonWorksDetailsEntityTo.worksChapterLocations.push(res.data.url);
       this.$message.success("上传" + res.message);
     },
     cartoonChapterIdBlur() {
+      console.log(this.uploadpolicy2.indexOf("worksChapterId"));
+      if (this.uploadpolicy2.indexOf("worksChapterId") > 0) {
+        return;
+      }
       this.uploadpolicy2 +=
         "&worksChapterId=" + this.CartoonWorksDetailsEntityTo.cartoonChapterId;
     },

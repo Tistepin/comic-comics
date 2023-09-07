@@ -26,3 +26,13 @@ export function AddFriend(params) {
     params
   });
 }
+
+
+// 獲取好友 和好友状态
+export function getWorks(params) {
+  return request({
+    url: "ComiGo/getWorks",
+    method: "GET",
+    params
+  });
+}
