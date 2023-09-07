@@ -399,7 +399,10 @@ export default {
       this.works.defaultImage = file.data.url;
     },
     handleRemove({response}) {
-      Remove({url:response.data.url}).then((result) => {
+      let urls = [];
+      urls.push(response.data.url);
+      let a = { urls: urls };
+      Remove(a).then((result) => {
         this.$message.success("移除成功");
       })
     },
