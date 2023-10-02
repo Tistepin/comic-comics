@@ -184,6 +184,7 @@ export default {
       });
     },
     handleUploadSuccess(res, file) {
+      console.log(1);
       this.CartoonWorksDetailsEntityTo.worksChapterLocations.push(res.data.url);
       this.$message.success("上传" + res.message);
     },

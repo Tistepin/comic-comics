@@ -232,6 +232,7 @@ export default {
     // 获取详情信息
     getWorksInfo(ID) {
       GetWorksInfo({ WorksId: ID }).then((res) => {
+        console.log("WorksInfoData",res.data);
         this.WorksInfoData = res.data.data;
       });
     },

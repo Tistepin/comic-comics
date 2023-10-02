@@ -22,7 +22,7 @@ module.exports = {
     },
     proxy: {
       "/ComicA": {
-        target: 'http://'+process.env.VUE_APP_API_URL, // 这个链接是要代理到的地址
+        target: 'http://'+process.env.VUE_APP_API_URL+":8084", // 这个链接是要代理到的地址
         changeOrigin: true,
         secure: false,
         pathRewrite: {
@@ -54,7 +54,7 @@ module.exports = {
         },
       },
       "/ComiGo": {
-        target: 'http://'+process.env.VUE_APP_API_URL, // 这个链接是要代理到的地址
+        target: 'http://'+process.env.VUE_APP_API_URL+":8084", // 这个链接是要代理到的地址
         changeOrigin: true,
         secure: false,
         pathRewrite: {
